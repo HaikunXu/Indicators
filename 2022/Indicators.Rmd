@@ -8,25 +8,21 @@ output:
 ---
 
 ```{r setup, include = FALSE}
+year <- 2022
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
 ```{r load library}
-ly <- 2021 # last data year
-year <- ly + 1
-
-dir <- paste0("D:/OneDrive - IATTC/Git/Indicators/",year,"/")
-setwd(dir)
+# dir <- paste0("D:/OneDrive - IATTC/Git/Indicators/",year,"/")
+# setwd(dir)
 
 library(tidyverse)
-# library(r4ss)
-# library(mgcv)
-# library(IATTCassessment)
+library(knitr)
 library(patchwork)
 ```
 
 ```{r Figure 1a}
-Figure1 <- paste0("D:/OneDrive - IATTC/Git/Indicators/",year,"/data/")
+Figure1 <- "data/"
 # table is from A7 in the FSR
 
 A71 <- read.csv(paste0(Figure1,"A7_old.csv"))
@@ -101,8 +97,8 @@ f1d <- ggplot(data=A10) +
 ```
 
 ```{r Figure 1}
-ggsave((f1a + f1b) / (f1c + f1d),file=paste0(dir,"Figure1.pdf"),height=12,width=12)
-ggsave((f1a + f1b) / (f1c + f1d),file=paste0(dir,"Figure1.png"),height=12,width=12)
+ggsave((f1a + f1b) / (f1c + f1d),file="Figure1.pdf",height=12,width=12)
+ggsave((f1a + f1b) / (f1c + f1d),file="Figure1.png",height=12,width=12)
 ```
 
 ```{r Figure 2a}
@@ -125,8 +121,8 @@ f2a <- ggplot(data=A7_catch) +
   coord_cartesian(ylim = c(0,2.5)) +
   xlab("") + ylab("Relative catch in weight-Captura relativa en peso")
 
-ggsave(f2a,file=paste0(dir,"Figure2a.pdf"),height=10,width=12)
-ggsave(f2a,file=paste0(dir,"Figure2a.png"),height=10,width=12)
+ggsave(f2a,file="Figure2a.pdf",height=10,width=12)
+ggsave(f2a,file="Figure2a.png",height=10,width=12)
 ```
 
 ```{r Mean weight}
@@ -160,8 +156,8 @@ f2b <- ggplot(data=A7_catchN) +
   coord_cartesian(ylim = c(0,2.5)) +
   xlab("") + ylab("Relative catch in numbers-Captura relativa en número")
 
-ggsave(f2b,file=paste0(dir,"Figure2b.pdf"),height=10,width=12)
-ggsave(f2b,file=paste0(dir,"Figure2b.png"),height=10,width=12)
+ggsave(f2b,file="Figure2b.pdf",height=10,width=12)
+ggsave(f2b,file="Figure2b.png",height=10,width=12)
 ```
 
 ```{r Figure 3}
@@ -184,8 +180,8 @@ f3 <- ggplot(data=A7_cps) +
   coord_cartesian(ylim = c(0,2.5)) +
   xlab("") + ylab("Relative catch per set-Captura por lance relativa")
 
-ggsave(f3,file=paste0(dir,"Figure3.pdf"),height=10,width=12)
-ggsave(f3,file=paste0(dir,"Figure3.png"),height=10,width=12)
+ggsave(f3,file="Figure3.pdf",height=10,width=12)
+ggsave(f3,file="Figure3.png",height=10,width=12)
 ```
 
 ```{r Figure 4}
@@ -211,8 +207,8 @@ f4 <- ggplot(data=MeanL) +
   coord_cartesian(ylim = c(0.5,1.5)) +
   xlab("") + ylab("Relative average length-Talla promedio relativa")
 
-ggsave(f4,file=paste0(dir,"Figure4.pdf"),height=10,width=12)
-ggsave(f4,file=paste0(dir,"Figure4.png"),height=10,width=12)
+ggsave(f4,file="Figure4.pdf",height=10,width=12)
+ggsave(f4,file="Figure4.png",height=10,width=12)
 ```
 
 ```{r Figure 5}
@@ -230,15 +226,15 @@ f5 <- ggplot(data=DEL_Index) +
   geom_line(aes(x=Year,y=CPUE)) +
   geom_point(aes(x=Year,y=CPUE)) +
   # geom_errorbar(aes(x=Year,ymin=exp(log(CPUE)-1.96*SD_log),ymax=exp(log(CPUE)+1.96*SD_log))) +
-  coord_cartesian(expand = FALSE, ylim = c(0,4),xlim = c(1999,ly+2)) +
+  coord_cartesian(expand = FALSE, ylim = c(0,4),xlim = c(1999,year+1)) +
   geom_hline(yintercept = 1) +
   geom_hline(yintercept = low, linetype = "dashed") +
   geom_hline(yintercept = high, linetype = "dashed") +
   xlab("") + ylab("Relative CPUE - CPUE relativa") +
   theme_bw(20)
 
-ggsave(f5,file=paste0(dir,"Figure5.pdf"),height=8,width=12)
-ggsave(f5,file=paste0(dir,"Figure5.png"),height=8,width=12)
+ggsave(f5,file="Figure5.pdf",height=8,width=12)
+ggsave(f5,file="Figure5.png",height=8,width=12)
 ```
 
 ```{r Figure 6}
@@ -291,10 +287,10 @@ f6c <- ggplot(data=A9) +
   geom_hline(yintercept = Effort_low, linetype = "dashed") +
   geom_hline(yintercept = Effort_high, linetype = "dashed") +
   geom_hline(yintercept = 1) +
-  coord_cartesian(ylim = c(0,2),xlim=c(2000,ly))
+  coord_cartesian(ylim = c(0,2),xlim=c(2000,year-1))
 
-ggsave(f6a / f6b / f6c,file=paste0(dir,"Figure6.pdf"),height=12,width=8)
-ggsave(f6a / f6b / f6c,file=paste0(dir,"Figure6.png"),height=12,width=8)
+ggsave(f6a / f6b / f6c,file="Figure6.pdf",height=12,width=8)
+ggsave(f6a / f6b / f6c,file="Figure6.png",height=12,width=8)
 ```
 
 ```{r Figure 7top}
@@ -400,15 +396,20 @@ f7d <- ggplot(data=YFT_Length) +
 ```
 
 ```{r Figure 7}
-ggsave((f7a + f7b) / (f7c + f7d),file=paste0(dir,"Figure7.pdf"),height=12,width=16)
-ggsave((f7a + f7b) / (f7c + f7d),file=paste0(dir,"Figure7.png"),height=12,width=16)
+ggsave((f7a + f7b) / (f7c + f7d),file="Figure7.pdf",height=12,width=16)
+ggsave((f7a + f7b) / (f7c + f7d),file="Figure7.png",height=12,width=16)
 ```
 
-![](Figure1.png)\
-![](Figure2a.png)\
-![](Figure2b.png)\
-![](Figure3.png)\
-![](Figure4.png)\
-![](Figure5.png)\
-![](Figure6.png)\
-![](Figure7.png)\
+# Figures
+
+#  ![](Figure1.png) ![](Figure2a.png) ![](Figure2b.png) ![](Figure3.png) ![](Figure4.png) ![](Figure5.png) ![](Figure6.png) ![](Figure7.png) 
+
+# Tables 
+
+```{r}
+kable(DEL_Index,caption = "YFT DEL index")
+kable(BET_Index,caption = "BET LL index")
+kable(YFT_Index,caption = "YFT LL index")
+kable(BET_Length,caption = "BET LL length")
+kable(YFT_Length,caption = "YFT LL length")
+```

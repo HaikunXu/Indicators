@@ -119,7 +119,7 @@ f2a <- ggplot(data=A7_catch) +
   facet_grid(Species~Type) +
   theme_bw(16) +
   coord_cartesian(ylim = c(0,2.5)) +
-  xlab("") + ylab("Relative catch in weight-Captura relativa en peso")
+  xlab("") + ylab("Relative catch in weight - Captura relativa en peso")
 
 ggsave(f2a,file="Figure2a.pdf",height=10,width=12)
 ggsave(f2a,file="Figure2a.png",height=10,width=12)
@@ -154,7 +154,7 @@ f2b <- ggplot(data=A7_catchN) +
   facet_grid(Species~Type) +
   theme_bw(16) +
   coord_cartesian(ylim = c(0,2.5)) +
-  xlab("") + ylab("Relative catch in numbers-Captura relativa en número")
+  xlab("") + ylab("Relative catch in numbers - Captura relativa en número")
 
 ggsave(f2b,file="Figure2b.pdf",height=10,width=12)
 ggsave(f2b,file="Figure2b.png",height=10,width=12)
@@ -178,7 +178,7 @@ f3 <- ggplot(data=A7_cps) +
   facet_grid(Species~Type) +
   theme_bw(16) +
   coord_cartesian(ylim = c(0,2.5)) +
-  xlab("") + ylab("Relative catch per set-Captura por lance relativa")
+  xlab("") + ylab("Relative catch per set - Captura por lance relativa")
 
 ggsave(f3,file="Figure3.pdf",height=10,width=12)
 ggsave(f3,file="Figure3.png",height=10,width=12)
@@ -205,16 +205,16 @@ f4 <- ggplot(data=MeanL) +
   facet_grid(Species~Type) +
   theme_bw(16) +
   coord_cartesian(ylim = c(0.5,1.5)) +
-  xlab("") + ylab("Relative average length-Talla promedio relativa")
+  xlab("") + ylab("Relative average length - Talla promedio relativa")
 
 ggsave(f4,file="Figure4.pdf",height=10,width=12)
 ggsave(f4,file="Figure4.png",height=10,width=12)
 ```
 
-```{r Figure 5}
-Figure5 <- "D:/OneDrive - IATTC/IATTC/2022/SAC13/YFT CPUE/DEL/DEL_YFT75-Area/"
+```{r Figure 5a}
+Figure5a <- "D:/OneDrive - IATTC/IATTC/2022/SAC13/YFT CPUE/DEL/DEL_YFT75-Area/"
 
-DEL_Index <- read.csv(paste0(Figure5,"Table_for_SS3.csv")) %>%
+DEL_Index <- read.csv(paste0(Figure5a,"Table_for_SS3.csv")) %>%
   mutate(Year=Year/4+1974.75) %>%
   filter(Year>=2000) %>%
   mutate(CPUE=Estimate_metric_tons/mean(Estimate_metric_tons))
@@ -222,7 +222,7 @@ DEL_Index <- read.csv(paste0(Figure5,"Table_for_SS3.csv")) %>%
 low <- quantile(DEL_Index$CPUE,0.1)
 high <- quantile(DEL_Index$CPUE,0.9)
 
-f5 <- ggplot(data=DEL_Index) +
+f5a <- ggplot(data=DEL_Index) +
   geom_line(aes(x=Year,y=CPUE)) +
   geom_point(aes(x=Year,y=CPUE)) +
   # geom_errorbar(aes(x=Year,ymin=exp(log(CPUE)-1.96*SD_log),ymax=exp(log(CPUE)+1.96*SD_log))) +
@@ -232,9 +232,32 @@ f5 <- ggplot(data=DEL_Index) +
   geom_hline(yintercept = high, linetype = "dashed") +
   xlab("") + ylab("Relative CPUE - CPUE relativa") +
   theme_bw(20)
+```
 
-ggsave(f5,file="Figure5.pdf",height=8,width=12)
-ggsave(f5,file="Figure5.png",height=8,width=12)
+```{r Figure 5b}
+Figure5b <- "D:/OneDrive - IATTC/IATTC/2022/SAC13/YFT CPUE/DEL/DEL_LF-Area/"
+DEL_Length <- read.csv(paste0(Figure5b,"Mean_Length.csv")) %>%
+  mutate(Year=Year/4+1974.75) %>%
+  filter(Year>=2000) %>%
+  mutate(Mean_L=Mean_L/mean(Mean_L))
+
+low <- quantile(DEL_Length$Mean_L,0.1)
+high <- quantile(DEL_Length$Mean_L,0.9)
+
+f5b <- ggplot(data=DEL_Length) +
+  geom_line(aes(x=Year,y=Mean_L)) +
+  geom_point(aes(x=Year,y=Mean_L)) +
+  theme_bw(20) +
+  xlab("") + ylab("Relative average length - Talla promedio relativa") +
+  geom_hline(yintercept = low, linetype = "dashed") +
+  geom_hline(yintercept = high, linetype = "dashed") +
+  geom_hline(yintercept = 1) +
+  coord_cartesian(ylim = c(0.75,1.25))
+```
+
+```{r Figure 5}
+ggsave(f5a / f5b,file="Figure5.pdf",height=12,width=12)
+ggsave(f5a / f5b,file="Figure5.png",height=12,width=12)
 ```
 
 ```{r Figure 6}
@@ -317,7 +340,7 @@ f7a <- ggplot(data=BET_Index) +
   geom_line(aes(x=Year,y=CPUE)) +
   geom_point(aes(x=Year,y=CPUE)) +
   theme_bw(16) +
-  xlab("") + ylab("CPUE") +
+  xlab("") + ylab("Relative CPUE - CPUE relativa") +
   # geom_errorbar(aes(x=Year,ymin=exp(log(CPUE)-1.96*SD_log),ymax=exp(log(CPUE)+1.96*SD_log))) +
   geom_hline(yintercept = BET_low, linetype = "dashed") +
   geom_hline(yintercept = BET_high, linetype = "dashed") +
@@ -368,7 +391,7 @@ f7c <- ggplot(data=BET_Length) +
   geom_line(aes(x=Year,y=Mean_L)) +
   geom_point(aes(x=Year,y=Mean_L)) +
   theme_bw(16) +
-  xlab("") + ylab("Mean length (cm)") +
+  xlab("") + ylab("Relative average length - Talla promedio relativa") +
   geom_hline(yintercept = BET_low, linetype = "dashed") +
   geom_hline(yintercept = BET_high, linetype = "dashed") +
   geom_hline(yintercept = 1) +
@@ -402,9 +425,31 @@ ggsave((f7a + f7b) / (f7c + f7d),file="Figure7.png",height=12,width=16)
 
 # Figures
 
-#  ![](Figure1.png) ![](Figure2a.png) ![](Figure2b.png) ![](Figure3.png) ![](Figure4.png) ![](Figure5.png) ![](Figure6.png) ![](Figure7.png) 
+![](Figure1.png) <br>\
+Figure 1
 
-# Tables 
+![](Figure2a.png) <br>\
+Figure 2a
+
+![](Figure2b.png) <br>\
+Figure 2b
+
+![](Figure3.png) <br>\
+Figure 3
+
+![](Figure4.png) <br>\
+Figure 4
+
+![](Figure5.png) <br>\
+Figure 5
+
+![](Figure6.png) <br>\
+Figure 6
+
+![](Figure7.png) <br>\
+Figure 7
+
+# Tables
 
 ```{r}
 kable(DEL_Index,caption = "YFT DEL index")

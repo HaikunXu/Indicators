@@ -226,7 +226,7 @@ f5a <- ggplot(data=DEL_Index) +
   geom_line(aes(x=Year,y=CPUE)) +
   geom_point(aes(x=Year,y=CPUE)) +
   # geom_errorbar(aes(x=Year,ymin=exp(log(CPUE)-1.96*SD_log),ymax=exp(log(CPUE)+1.96*SD_log))) +
-  coord_cartesian(expand = FALSE, ylim = c(0,4),xlim = c(1999,year+1)) +
+  coord_cartesian(expand = FALSE, ylim = c(0,3.5),xlim = c(1999,year+1)) +
   geom_hline(yintercept = 1) +
   geom_hline(yintercept = low, linetype = "dashed") +
   geom_hline(yintercept = high, linetype = "dashed") +
@@ -252,7 +252,7 @@ f5b <- ggplot(data=DEL_Length) +
   geom_hline(yintercept = low, linetype = "dashed") +
   geom_hline(yintercept = high, linetype = "dashed") +
   geom_hline(yintercept = 1) +
-  coord_cartesian(ylim = c(0.75,1.25))
+  coord_cartesian(ylim = c(0.7,1.3))
 ```
 
 ```{r Figure 5}
@@ -317,8 +317,8 @@ ggsave(f6a / f6b / f6c,file="Figure6.png",height=12,width=8)
 ```
 
 ```{r Figure 7top}
-BET_Index <- "D:/OneDrive - IATTC/IATTC/2021/SAC12/BET CPUE/BET_vessel_Late_HBF_Area/"
-YFT_Index <- "D:/OneDrive - IATTC/IATTC/2021/SAC12/YFT CPUE/LL/YFT_vessel_HBF_Area_Q14_Late/"
+BET_Index <- "D:/OneDrive - IATTC/IATTC/2022/SAC13/BET CPUE/BET_vessel_Late_HBF_Area/"
+YFT_Index <- "D:/OneDrive - IATTC/IATTC/2022/SAC13/YFT CPUE/LL/YFT_vessel_Late_HBF_Area/"
 
 BET <- read.csv(paste0(BET_Index,"Table_for_SS3.csv"))
 YFT <- read.csv(paste0(YFT_Index,"Table_for_SS3.csv"))
@@ -345,7 +345,7 @@ f7a <- ggplot(data=BET_Index) +
   geom_hline(yintercept = BET_low, linetype = "dashed") +
   geom_hline(yintercept = BET_high, linetype = "dashed") +
   geom_hline(yintercept = 1) +
-  coord_cartesian(ylim=c(0,2.5)) + ggtitle("BET")
+  coord_cartesian(xlim = c(2000,year), ylim=c(0,2.5)) + ggtitle("BET")
   
 
 YFT_Index <- YFT %>%
@@ -364,15 +364,15 @@ f7b <- ggplot(data=YFT_Index) +
   theme_bw(16) +
   xlab("") + ylab("") +
   # geom_errorbar(aes(x=Year,ymin=exp(log(CPUE)-1.96*SD_log),ymax=exp(log(CPUE)+1.96*SD_log))) +
-  geom_hline(yintercept = BET_low, linetype = "dashed") +
-  geom_hline(yintercept = BET_high, linetype = "dashed") +
+  geom_hline(yintercept = YFT_low, linetype = "dashed") +
+  geom_hline(yintercept = YFT_high, linetype = "dashed") +
   geom_hline(yintercept = 1) +
-  coord_cartesian(ylim=c(0,2.5)) + ggtitle("YFT")
+  coord_cartesian(xlim = c(2000,year), ylim=c(0,2.5)) + ggtitle("YFT")
 ```
 
 ```{r Figure 7bottom}
-BET_Length <- "D:/OneDrive - IATTC/IATTC/2021/SAC12/BET CPUE/BET_LF-Late-Area-SAC12/"
-YFT_Length <- "D:/OneDrive - IATTC/IATTC/2021/SAC12/YFT CPUE/LL/YFT_LF-Area-Q14-Late-SAC12/"
+BET_Length <- "D:/OneDrive - IATTC/IATTC/2022/SAC13/BET CPUE/BET_LF-Late-Area-SAC13/"
+YFT_Length <- "D:/OneDrive - IATTC/IATTC/2022/SAC13/YFT CPUE/LL/YFT_LF-Late-Area-SAC13/"
 
 BET <- read.csv(paste0(BET_Length,"Mean_Length.csv"))
 YFT <- read.csv(paste0(YFT_Length,"Mean_Length.csv"))
@@ -395,7 +395,7 @@ f7c <- ggplot(data=BET_Length) +
   geom_hline(yintercept = BET_low, linetype = "dashed") +
   geom_hline(yintercept = BET_high, linetype = "dashed") +
   geom_hline(yintercept = 1) +
-  coord_cartesian(ylim = c(0.8,1.2)) + ggtitle("BET")
+  coord_cartesian(xlim = c(2000,year), ylim = c(0.8,1.2)) + ggtitle("BET")
 
 YFT_Length <- YFT %>%
   mutate(Species="Yellowfin",
@@ -415,7 +415,7 @@ f7d <- ggplot(data=YFT_Length) +
   geom_hline(yintercept = YFT_low, linetype = "dashed") +
   geom_hline(yintercept = YFT_high, linetype = "dashed") +
   geom_hline(yintercept = 1) +
-  coord_cartesian(ylim = c(0.8,1.2)) + ggtitle("YFT")
+  coord_cartesian(xlim = c(2000,year), ylim = c(0.8,1.2)) + ggtitle("YFT")
 ```
 
 ```{r Figure 7}

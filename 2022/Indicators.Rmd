@@ -21,78 +21,108 @@ library(knitr)
 library(patchwork)
 ```
 
-```{r Figure 1a}
-Figure1 <- "data/"
-# table is from A7 in the FSR
+```{r prepare the data table}
+dir <- "data/"
 
-A71 <- read.csv(paste0(Figure1,"A7_old.csv"))
-A72 <- read.csv(paste0(Figure1,"A7.csv"))
+A71 <- read.csv(paste0(dir,"A7_old.csv"))
+A72 <- read.csv(paste0(dir,"A7.csv"))
+
+MeanW <- read.csv(paste0(dir,"average_weight.csv"))
+MeanW <- MeanW %>% gather(2:9,key="ST",value="mean_weight") %>%
+  mutate(Species=substr(ST,1,3),
+         Type=substr(ST,5,8))
 
 A7 <- rbind(A71,A72) %>%
-  gather(4:6,key="Species",value="Catch") %>%
-  group_by(Type) %>%
-  mutate(NSets = as.numeric(NSets),
-         NSets2=NSets/mean(NSets))
+  gather(4:6,key="Species",value="Catch")
 
-DEL_low <- quantile(A7$NSets2[which(A7$Type=="DEL")],0.1)
-DEL_high <- quantile(A7$NSets2[which(A7$Type=="DEL")],0.9)
+A7 <- left_join(A7,MeanW) %>%
+  filter(!(Type=="DEL"&Species=="BET")) %>%
+  group_by(Type,Species) %>%
+  mutate(CatchN=Catch/mean_weight,
+         CPS=Catch/NSets,
+         mean=1,
+         sq=ifelse(abs(Year-2018)<2,1,0),
 
+         Catch2=Catch/mean(Catch),
+         Catch2_low=quantile(Catch2,0.1),
+         Catch2_high=quantile(Catch2,0.9),
+         Catch2_sq=ifelse(Year>=2017,sum(Catch2*sq)/3,NA),
+         
+         CatchN2=CatchN/mean(CatchN),
+         CatchN2_low=quantile(CatchN2,0.1),
+         CatchN2_high=quantile(CatchN2,0.9),
+         CatchN2_sq=ifelse(Year>=2017,sum(CatchN2*sq)/3,NA),
+         
+         NSets2=NSets/mean(NSets),
+         NSets2_low=quantile(NSets2,0.1),
+         NSets2_high=quantile(NSets2,0.9),
+         NSets2_sq=ifelse(Year>=2017,sum(NSets2*sq)/3,NA),
+         
+         CPS2=CPS/mean(CPS),
+         CPS2_low=quantile(CPS2,0.1),
+         CPS2_high=quantile(CPS2,0.9),
+         CPS2_sq=ifelse(Year>=2017,sum(CPS2*sq)/3,NA))
+```
+
+
+```{r Figure 1a}
 f1a <- ggplot(data=A7 %>% filter(Type=="DEL")) +
   geom_line(aes(x=Year,y=NSets2)) +
   geom_point(aes(x=Year,y=NSets2)) +
   xlab("") + ylab("Relative number of sets\nNúmero de lances relativo") +
   theme_bw(16) +
-  geom_hline(yintercept = DEL_low, linetype = "dashed") +
-  geom_hline(yintercept = DEL_high, linetype = "dashed") +
-  geom_hline(yintercept = 1) +
+  geom_line(aes(x=Year,y=NSets2_low),linetype="dashed") +
+  geom_line(aes(x=Year,y=NSets2_high),linetype="dashed") +
+  geom_line(aes(x=Year,y=mean)) +
+  geom_line(aes(x=Year,y=NSets2_sq),color="red") +
   coord_cartesian(ylim = c(0,2)) + ggtitle("DEL")
 ```
 
 ```{r Figure 1b}
-NOA_low <- quantile(A7$NSets2[which(A7$Type=="NOA")],0.1)
-NOA_high <- quantile(A7$NSets2[which(A7$Type=="NOA")],0.9)
-
 f1b <- ggplot(data=A7 %>% filter(Type=="NOA")) +
   geom_line(aes(x=Year,y=NSets2)) +
   geom_point(aes(x=Year,y=NSets2)) +
   xlab("") + ylab("Relative number of sets\nNúmero de lances relativo") +
   theme_bw(16) +
-  geom_hline(yintercept = NOA_low, linetype = "dashed") +
-  geom_hline(yintercept = NOA_high, linetype = "dashed") +
-  geom_hline(yintercept = 1) +
+  geom_line(aes(x=Year,y=NSets2_low),linetype="dashed") +
+  geom_line(aes(x=Year,y=NSets2_high),linetype="dashed") +
+  geom_line(aes(x=Year,y=mean)) +
+  geom_line(aes(x=Year,y=NSets2_sq),color="red") +
   coord_cartesian(ylim = c(0,2)) + ggtitle("NOA")
 ```
 
 ```{r Figure 1c}
-OBJ_low <- quantile(A7$NSets2[which(A7$Type=="OBJ")],0.1)
-OBJ_high <- quantile(A7$NSets2[which(A7$Type=="OBJ")],0.9)
-
 f1c <- ggplot(data=A7 %>% filter(Type=="OBJ")) +
   geom_line(aes(x=Year,y=NSets2)) +
   geom_point(aes(x=Year,y=NSets2)) +
   xlab("") + ylab("Relative number of sets\nNúmero de lances relativo") +
   theme_bw(16) +
-  geom_hline(yintercept = OBJ_low, linetype = "dashed") +
-  geom_hline(yintercept = OBJ_high, linetype = "dashed") +
-  geom_hline(yintercept = 1) +
+  geom_line(aes(x=Year,y=NSets2_low),linetype="dashed") +
+  geom_line(aes(x=Year,y=NSets2_high),linetype="dashed") +
+  geom_line(aes(x=Year,y=mean)) +
+  geom_line(aes(x=Year,y=NSets2_sq),color="red") +
   coord_cartesian(ylim = c(0,2)) + ggtitle("OBJ")
 ```
 
 ```{r Figure 1d}
-A10 <- read.csv(paste0(Figure1,"A10.csv"))
+A10 <- read.csv(paste0(dir,"A10.csv"))
 
-A10 <- A10 %>% mutate(Capacity=Capacity/mean(Capacity))
-
-capacity_low <- quantile(A10$Capacity,0.1)
-capacity_high <- quantile(A10$Capacity,0.9)
+A10 <- A10 %>%
+  mutate(Capacity=Capacity/mean(Capacity),
+         Capacity_low=quantile(Capacity,0.1),
+         Capacity_high=quantile(Capacity,0.9),
+         mean=1,
+         sq=ifelse(abs(Year-2018)<2,1,0),
+         Capacity_sq=ifelse(Year>=2017,sum(Capacity*sq)/3,NA))
 
 f1d <- ggplot(data=A10) +
   geom_line(aes(x=Year,y=Capacity)) +
   geom_point(aes(x=Year,y=Capacity)) +
   theme_bw(16) +
-  geom_hline(yintercept = capacity_low, linetype = "dashed") +
-  geom_hline(yintercept = capacity_high, linetype = "dashed") +
-  geom_hline(yintercept = 1) +
+  geom_line(aes(x=Year,y=Capacity_low),linetype="dashed") +
+  geom_line(aes(x=Year,y=Capacity_high),linetype="dashed") +
+  geom_line(aes(x=Year,y=mean)) +
+  geom_line(aes(x=Year,y=Capacity_sq),color="red") +
   xlab("") + ylab("Closure-adjust capacity\nCapacidad ajustada por veda") +
   coord_cartesian(ylim = c(0.75,1.25)) + ggtitle("Purse-seine")
 ```
@@ -103,16 +133,8 @@ ggsave((f1a + f1b) / (f1c + f1d),file="Figure1.png",height=12,width=12)
 ```
 
 ```{r Figure 2a}
-A7_catch <- A7 %>%
-  filter(!(Type=="DEL"&Species=="BET")) %>%
-  group_by(Species,Type) %>%
-  mutate(Catch2=Catch/mean(Catch),
-         catch_low=quantile(Catch2,0.1),
-         catch_high=quantile(Catch2,0.9),
-         catch_mean=1)
-
 # catch adjustment for 2020 and 2021
-A7_catch_adjust <- A7_catch %>% filter(Year>=2020,Type=="OBJ")
+A7_catch_adjust <- A7 %>% filter(Year>=2020,Type=="OBJ")
 
 A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET")] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET")] * (1-0.18)
 
@@ -122,13 +144,14 @@ A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year
 A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2020)] * (1-0.06)
 A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2021)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2021)] * (1+0.04)
 
-f2a <- ggplot(data=A7_catch) +
+f2a <- ggplot(data=A7) +
   geom_line(aes(x=Year,y=Catch2)) +
   geom_point(aes(x=Year,y=Catch2)) +
   geom_point(aes(x=Year,y=Catch2),size=2,color="red",data=A7_catch_adjust) +
-  geom_line(aes(x=Year,y=catch_low),linetype="dashed") +
-  geom_line(aes(x=Year,y=catch_high),linetype="dashed") +
-  geom_line(aes(x=Year,y=catch_mean)) +
+  geom_line(aes(x=Year,y=Catch2_low),linetype="dashed") +
+  geom_line(aes(x=Year,y=Catch2_high),linetype="dashed") +
+  geom_line(aes(x=Year,y=mean)) +
+  geom_line(aes(x=Year,y=Catch2_sq),color="red") +
   facet_grid(Species~Type) +
   theme_bw(16) +
   coord_cartesian(ylim = c(0,2.5)) +
@@ -136,14 +159,6 @@ f2a <- ggplot(data=A7_catch) +
 
 ggsave(f2a,file="Figure2a.pdf",height=10,width=12)
 ggsave(f2a,file="Figure2a.png",height=10,width=12)
-```
-
-```{r Mean weight}
-MeanW <- read.csv(paste0(Figure1,"average_weight.csv"))
-
-MeanW <- MeanW %>% gather(2:9,key="ST",value="mean_weight") %>%
-  mutate(Species=substr(ST,1,3),
-         Type=substr(ST,5,8))
 ```
 
 ```{r Figure 2b}
@@ -154,9 +169,11 @@ A7_catchN <- left_join(A7_catchN,MeanW) %>%
   mutate(CatchN=Catch/mean_weight) %>%
   group_by(Species,Type) %>%
   mutate(Catch2=CatchN/mean(CatchN),
-         catch_low=quantile(Catch2,0.1),
-         catch_high=quantile(Catch2,0.9),
-         catch_mean=1)
+         Catch2_low=quantile(Catch2,0.1),
+         Catch2_high=quantile(Catch2,0.9),
+         Catch2_mean=1,
+         sq=ifelse(abs(Year-2018)<2,1,0),
+         Catch2_sq=ifelse(Year>=2017,sum(Catch2*sq)/3,NA))
 
 # catch adjustment for 2020 and 2021
 A7_catch_adjust <- A7_catchN %>% filter(Year>=2020,Type=="OBJ")
@@ -173,9 +190,10 @@ f2b <- ggplot(data=A7_catchN) +
   geom_line(aes(x=Year,y=Catch2)) +
   geom_point(aes(x=Year,y=Catch2)) +
   geom_point(aes(x=Year,y=Catch2),size=2,color="red",data=A7_catch_adjust) +
-  geom_line(aes(x=Year,y=catch_low),linetype="dashed") +
-  geom_line(aes(x=Year,y=catch_high),linetype="dashed") +
-  geom_line(aes(x=Year,y=catch_mean)) +
+  geom_line(aes(x=Year,y=Catch2_low),linetype="dashed") +
+  geom_line(aes(x=Year,y=Catch2_high),linetype="dashed") +
+  geom_line(aes(x=Year,y=Catch2_mean)) +
+  geom_line(aes(x=Year,y=Catch2_sq),color="red") +
   facet_grid(Species~Type) +
   theme_bw(16) +
   coord_cartesian(ylim = c(0,2.5)) +
@@ -186,16 +204,8 @@ ggsave(f2b,file="Figure2b.png",height=10,width=12)
 ```
 
 ```{r Figure 3}
-A7_cps <- A7 %>% mutate(CPS=Catch/NSets) %>%
-  filter(!(Type=="DEL"&Species=="BET")) %>%
-  group_by(Species,Type) %>%
-  mutate(CPS2=CPS/mean(CPS),
-         cps_low=quantile(CPS2,0.1),
-         cps_high=quantile(CPS2,0.9),
-         cps_mean=1)
-
 # catch adjustment for 2020 and 2021
-A7_cps_adjust <- A7_cps %>% filter(Year>=2020,Type=="OBJ")
+A7_cps_adjust <- A7 %>% filter(Year>=2020,Type=="OBJ")
 
 A7_cps_adjust$CPS2[which(A7_catch_adjust$Species=="BET")] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="BET")] * (1-0.18)
 
@@ -205,13 +215,14 @@ A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="YFT"&A7_cps_adjust$Year==2021)]
 A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2020)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2020)] * (1-0.06)
 A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2021)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2021)] * (1+0.04)
 
-f3 <- ggplot(data=A7_cps) +
+f3 <- ggplot(data=A7) +
   geom_line(aes(x=Year,y=CPS2)) +
   geom_point(aes(x=Year,y=CPS2)) +
   geom_point(aes(x=Year,y=CPS2),size=2,color="red",data=A7_cps_adjust) +
-  geom_line(aes(x=Year,y=cps_low),linetype="dashed") +
-  geom_line(aes(x=Year,y=cps_high),linetype="dashed") +
-  geom_line(aes(x=Year,y=cps_mean)) +
+  geom_line(aes(x=Year,y=CPS2_low),linetype="dashed") +
+  geom_line(aes(x=Year,y=CPS2_high),linetype="dashed") +
+  geom_line(aes(x=Year,y=mean)) +
+  geom_line(aes(x=Year,y=CPS2_sq),color="red") +
   facet_grid(Species~Type) +
   theme_bw(16) +
   coord_cartesian(ylim = c(0,2.5)) +
@@ -222,7 +233,7 @@ ggsave(f3,file="Figure3.png",height=10,width=12)
 ```
 
 ```{r Figure 4}
-MeanL <- read.csv(paste0(Figure1,"average_length.csv"))
+MeanL <- read.csv(paste0(dir,"average_length.csv"))
 
 MeanL <- MeanL %>% gather(2:9,key="ST",value="Length") %>%
   mutate(Species=substr(ST,1,3),
@@ -298,7 +309,7 @@ ggsave(f5a / f5b,file="Figure5.png",height=12,width=12)
 ```
 
 ```{r Figure 6}
-A2a <- read.csv(paste0(Figure1,"A2a.csv"))
+A2a <- read.csv(paste0(dir,"A2a.csv"))
 
 A2a$BET <- A2a$BET/mean(A2a$BET,na.rm = TRUE)
 A2a$YFT <- A2a$YFT/mean(A2a$YFT,na.rm = TRUE)
@@ -330,7 +341,7 @@ f6b <- ggplot(data=A2a %>% filter(Species=="YFT")) +
   geom_hline(yintercept = 1) +
   coord_cartesian(ylim = c(0,2)) + ggtitle("YFT")
 
-A9_raw <- read.csv(paste0(Figure1,"A9.csv"))
+A9_raw <- read.csv(paste0(dir,"A9.csv"))
 
 A9 <- data.frame(Year=A9_raw$Year,
                  Effort=A9_raw[,2]+A9_raw[,4]+A9_raw[,6]+A9_raw[,8]+A9_raw[,10]+A9_raw[,12]) %>% filter(Year>=2000) %>%

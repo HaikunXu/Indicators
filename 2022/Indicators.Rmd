@@ -40,7 +40,7 @@ DEL_high <- quantile(A7$NSets2[which(A7$Type=="DEL")],0.9)
 f1a <- ggplot(data=A7 %>% filter(Type=="DEL")) +
   geom_line(aes(x=Year,y=NSets2)) +
   geom_point(aes(x=Year,y=NSets2)) +
-  xlab("") + ylab("Relative number of sets") +
+  xlab("") + ylab("Relative number of sets\nNúmero de lances relativo") +
   theme_bw(16) +
   geom_hline(yintercept = DEL_low, linetype = "dashed") +
   geom_hline(yintercept = DEL_high, linetype = "dashed") +
@@ -55,7 +55,7 @@ NOA_high <- quantile(A7$NSets2[which(A7$Type=="NOA")],0.9)
 f1b <- ggplot(data=A7 %>% filter(Type=="NOA")) +
   geom_line(aes(x=Year,y=NSets2)) +
   geom_point(aes(x=Year,y=NSets2)) +
-  xlab("") + ylab("Relative number of sets") +
+  xlab("") + ylab("Relative number of sets\nNúmero de lances relativo") +
   theme_bw(16) +
   geom_hline(yintercept = NOA_low, linetype = "dashed") +
   geom_hline(yintercept = NOA_high, linetype = "dashed") +
@@ -70,7 +70,7 @@ OBJ_high <- quantile(A7$NSets2[which(A7$Type=="OBJ")],0.9)
 f1c <- ggplot(data=A7 %>% filter(Type=="OBJ")) +
   geom_line(aes(x=Year,y=NSets2)) +
   geom_point(aes(x=Year,y=NSets2)) +
-  xlab("") + ylab("Relative number of sets") +
+  xlab("") + ylab("Relative number of sets\nNúmero de lances relativo") +
   theme_bw(16) +
   geom_hline(yintercept = OBJ_low, linetype = "dashed") +
   geom_hline(yintercept = OBJ_high, linetype = "dashed") +
@@ -93,6 +93,7 @@ f1d <- ggplot(data=A10) +
   geom_hline(yintercept = capacity_low, linetype = "dashed") +
   geom_hline(yintercept = capacity_high, linetype = "dashed") +
   geom_hline(yintercept = 1) +
+  xlab("") + ylab("Closure-adjust capacity\nCapacidad ajustada por veda") +
   coord_cartesian(ylim = c(0.75,1.25)) + ggtitle("Purse-seine")
 ```
 
@@ -312,7 +313,7 @@ A2a <- A2a %>% gather(2:4,key="Species",value="Catch")
 f6a <- ggplot(data=A2a %>% filter(Species=="BET")) +
   geom_line(aes(x=Year,y=Catch)) +
   geom_point(aes(x=Year,y=Catch)) +
-  xlab("") + ylab("Relative longline catch") +
+  xlab("") + ylab("Relative longline catch\nCaptura palangrera relativa") +
   theme_bw(16) +
   geom_hline(yintercept = BET_low, linetype = "dashed") +
   geom_hline(yintercept = BET_high, linetype = "dashed") +
@@ -322,7 +323,7 @@ f6a <- ggplot(data=A2a %>% filter(Species=="BET")) +
 f6b <- ggplot(data=A2a %>% filter(Species=="YFT")) +
   geom_line(aes(x=Year,y=Catch)) +
   geom_point(aes(x=Year,y=Catch)) +
-  xlab("") + ylab("Relative longline catch") +
+  xlab("") + ylab("Relative longline catch\nCaptura palangrera relativa") +
   theme_bw(16) +
   geom_hline(yintercept = YFT_low, linetype = "dashed") +
   geom_hline(yintercept = YFT_high, linetype = "dashed") +
@@ -341,7 +342,7 @@ Effort_high <- quantile(A9$Effort2,0.9)
 f6c <- ggplot(data=A9) +
   geom_line(aes(x=Year,y=Effort2)) +
   geom_point(aes(x=Year,y=Effort2)) +
-  xlab("") + ylab("Relative longline effort") +
+  xlab("") + ylab("Relative longline effort\nEsfuerzo palangrera relativa") +
   theme_bw(16) +
   geom_hline(yintercept = Effort_low, linetype = "dashed") +
   geom_hline(yintercept = Effort_high, linetype = "dashed") +

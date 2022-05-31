@@ -136,13 +136,14 @@ ggsave((f1a + f1b) / (f1c + f1d),file="Figure1.png",height=12,width=12)
 # catch adjustment for 2020 and 2021
 A7_catch_adjust <- A7 %>% filter(Year>=2020,Type=="OBJ")
 
-A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET")] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET")] * (1-0.18)
+A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET"&A7_catch_adjust$Year==2020)] * (1-0.12)
+A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET"&A7_catch_adjust$Year==2021)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET"&A7_catch_adjust$Year==2021)] * (1-0.18)
 
-A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2020)] * (1+0.13)
+A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2020)] * (1+0.18)
 A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2021)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2021)] * (1-0.1)
 
-A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2020)] * (1-0.06)
-A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2021)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2021)] * (1+0.04)
+A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2020)] * (1-0.006)
+A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2021)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2021)] * (1+0.06)
 
 f2a <- ggplot(data=A7) +
   geom_line(aes(x=Year,y=Catch2)) +
@@ -178,13 +179,14 @@ A7_catchN <- left_join(A7_catchN,MeanW) %>%
 # catch adjustment for 2020 and 2021
 A7_catch_adjust <- A7_catchN %>% filter(Year>=2020,Type=="OBJ")
 
-A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET")] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET")] * (1-0.18)
+A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET"&A7_catch_adjust$Year==2020)] * (1-0.12)
+A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET"&A7_catch_adjust$Year==2021)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="BET"&A7_catch_adjust$Year==2021)] * (1-0.18)
 
-A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2020)] * (1+0.13)
+A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2020)] * (1+0.18)
 A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2021)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="YFT"&A7_catch_adjust$Year==2021)] * (1-0.1)
 
-A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2020)] * (1-0.06)
-A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2021)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2021)] * (1+0.04)
+A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2020)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2020)] * (1-0.006)
+A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2021)] <- A7_catch_adjust$Catch2[which(A7_catch_adjust$Species=="SKJ"&A7_catch_adjust$Year==2021)] * (1+0.06)
 
 f2b <- ggplot(data=A7_catchN) +
   geom_line(aes(x=Year,y=Catch2)) +
@@ -207,13 +209,14 @@ ggsave(f2b,file="Figure2b.png",height=10,width=12)
 # catch adjustment for 2020 and 2021
 A7_cps_adjust <- A7 %>% filter(Year>=2020,Type=="OBJ")
 
-A7_cps_adjust$CPS2[which(A7_catch_adjust$Species=="BET")] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="BET")] * (1-0.18)
+A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="BET"&A7_cps_adjust$Year==2020)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="BET"&A7_cps_adjust$Year==2020)] * (1-0.12)
+A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="BET"&A7_cps_adjust$Year==2021)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="BET"&A7_cps_adjust$Year==2021)] * (1-0.18)
 
-A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="YFT"&A7_cps_adjust$Year==2020)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="YFT"&A7_cps_adjust$Year==2020)] * (1+0.13)
+A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="YFT"&A7_cps_adjust$Year==2020)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="YFT"&A7_cps_adjust$Year==2020)] * (1+0.18)
 A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="YFT"&A7_cps_adjust$Year==2021)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="YFT"&A7_cps_adjust$Year==2021)] * (1-0.1)
 
-A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2020)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2020)] * (1-0.06)
-A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2021)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2021)] * (1+0.04)
+A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2020)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2020)] * (1-0.006)
+A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2021)] <- A7_cps_adjust$CPS2[which(A7_cps_adjust$Species=="SKJ"&A7_cps_adjust$Year==2021)] * (1+0.06)
 
 f3 <- ggplot(data=A7) +
   geom_line(aes(x=Year,y=CPS2)) +

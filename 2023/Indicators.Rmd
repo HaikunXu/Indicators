@@ -587,3 +587,13 @@ Figure 6
 
 ![](Figure7.png) <br>\
 Figure 7
+
+# Tables
+
+```{r}
+kable(DEL_Index,caption = "YFT DEL index")
+kable(BET_Index,caption = "BET LL index")
+kable(YFT_Index,caption = "YFT LL index")
+kable(BET_Length,caption = "BET LL length")
+kable(YFT_Length,caption = "YFT LL length")
+```

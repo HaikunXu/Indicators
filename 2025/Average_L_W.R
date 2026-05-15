@@ -18,7 +18,7 @@
 # ----------------
 
 
-estone<-read.table("D:/OneDrive - IATTC/IATTC/2025/SAC16/PS Database/ESTONE.txt",header=F,sep=",")
+estone<-read.table("D:/OneDrive - IATTC/Git/Indicators/2026/data/ESTONE.txt",header=F,sep=",")
 names(estone)<-c("species","year","area","gear","mon","TN","TW","bin","N","W")
 
 
@@ -167,7 +167,7 @@ tmpclskj.obj<-tmpclz/apply(tmpcl,2,sum)
 
 write.csv(
   cbind(
-    seq(2000, 2024),
+    seq(2000, 2025),
     as.vector(tmpclyft.del),
     as.vector(tmpclskj.del),
     as.vector(tmpclbet.una),
@@ -177,7 +177,7 @@ write.csv(
     as.vector(tmpclyft.obj),
     as.vector(tmpclskj.obj)
   ),
-  file = "D:/OneDrive - IATTC/Git/Indicators/2025/data/average length_yr x setype_2000-2024.csv",
+  file = "D:/OneDrive - IATTC/Git/Indicators/2026/data/average length_yr x setype_2000-2025.csv",
   row.names = FALSE
 )
 
@@ -213,6 +213,6 @@ tmp.obj<-1000*tmp.w/tmp.n
 
 tmp.obj[is.na(tmp.obj)]<-0
 
-write.csv(cbind(seq(2000, 2024), tmp.del[, 2:3], tmp.una, tmp.obj),
-          file = "D:/OneDrive - IATTC/Git/Indicators/2025/data/average weight_yr x setype_2000-2024.csv",
+write.csv(cbind(seq(2000, 2025), tmp.del[, 2:3], tmp.una, tmp.obj),
+          file = "D:/OneDrive - IATTC/Git/Indicators/2026/data/average weight_yr x setype_2000-2025.csv",
           row.names = FALSE)

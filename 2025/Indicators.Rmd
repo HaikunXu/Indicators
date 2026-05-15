@@ -10,7 +10,7 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
-year <- 2025
+year <- 2026
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
@@ -21,7 +21,7 @@ library(patchwork)
 ```
 
 ```{r prepare the data table}
-dir <- "D:/OneDrive - IATTC/Git/Indicators/2025/data/"
+dir <- "D:/OneDrive - IATTC/Git/Indicators/2026/data/"
 
 A71 <- read.csv(paste0(dir, "A7_old.csv"))
 A72 <- read.csv(paste0(dir, "A7.csv"))
@@ -272,7 +272,7 @@ ggsave(f4,
 ```
 
 ```{r Figure 5a}
-Figure5a <- "D:/OneDrive - IATTC/IATTC/2025/SAC16/DEL SSIs/DEL_YFT_EPO_sdmTMB_Poisson/"
+Figure5a <- "D:/OneDrive - IATTC/IATTC/2026/SAC17/DEL SSIs/DEL_YFT_EPO_sdmTMB_Poisson/"
 
 DEL_Index <- read.csv(paste0(Figure5a, "Index.csv")) %>%
   mutate(Year = Year / 4 + 1974.875) %>%
@@ -299,7 +299,7 @@ f5a <- ggplot(data = DEL_Index) +
 ```
 
 ```{r Figure 5b}
-Figure5b <- "D:/OneDrive - IATTC/IATTC/2025/SAC16/DEL SSIs/"
+Figure5b <- "D:/OneDrive - IATTC/IATTC/2026/SAC17/DEL SSIs/"
 DEL_Length <- read.csv(paste0(Figure5b, "MeanL.csv")) %>%
   mutate(Year = Year / 4 + 1974.875) %>%
   filter(Year >= 2000) %>%
